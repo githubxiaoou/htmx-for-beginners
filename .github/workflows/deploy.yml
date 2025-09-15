@@ -1,0 +1,20 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - master # 推送到 main 分支时自动触发
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Trigger Render Deploy Hook
+        run: |
+          curl "$RENDER_DEPLOY_HOOK"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
