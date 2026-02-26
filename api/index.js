@@ -1,5 +1,4 @@
 import express from 'express';
-import serverless from 'serverless-http';
 import createHomepageTemplate from '../views/index.js';
 import createListTemplate from '../views/list.js';
 import createBookTemplate from '../views/book.js';
@@ -70,7 +69,7 @@ app.post('/books/search', (req, res) => {
     res.send(createListTemplate(BOOKS_DATA.filter(b => b.title.toLowerCase().includes(text))));
 });
 
-// 本地测试
+// 本地测试：在非生产环境下启动本地 HTTP server
 if (process.env.NODE_ENV !== 'production') {
     const PORT = 3000;
     app.listen(PORT, () => {
@@ -78,4 +77,5 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-export const handler = serverless(app);
+// 导出默认 app（适用于导入作为模块或在 serverless 环境外使用）
+export default app;
